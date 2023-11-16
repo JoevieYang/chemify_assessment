@@ -1,26 +1,57 @@
 import React from 'react';
-import logo from './logo.svg';
+import '@mantine/core/styles.css';
+import cx from 'clsx';
+import BackgroundImg from './assets/backgound.jpg';
 import './App.css';
+import classes from './styles/ResponsiveContainer.module.css';
+import { BrowserRouter as Router, Routes, Route} from "react-router-dom";
+
+import { Header } from './components/Header';
+
+import { MantineProvider, createTheme, Container, BackgroundImage } from '@mantine/core';
+
+import { AboutPage } from './pages/AboutPage';
+import { MainPage } from './pages/MainPage';
+import { NotFoundTitle } from './pages/NotFoundPage';
+
+const theme = createTheme({
+  components: {
+    Container: Container.extend({
+      classNames: (_, { size }) => ({
+        root: cx({ [classes.responsiveContainer]: size === 'responsive' }),
+      }),
+    }),
+  },
+});
+
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+     <MantineProvider theme={theme}>
+      {/* <BackgroundImage
+        src={BackgroundImg}
+        radius="xs"
+      > */}
+      <Container fluid size="responsive" >
+        <div className="App">
+          
+          <Router>
+            <Header></Header>
+            <Routes>
+              <Route path="/" element={<MainPage />}></Route>
+              <Route path="/about" element={<AboutPage />}></Route>
+              <Route path="/notfound" element={<NotFoundTitle />}></Route>
+            </Routes>
+          </Router>
+        </div>
+      </Container>
+      {/* </BackgroundImage> */}
+    </MantineProvider>
+    
   );
 }
+
+
+
 
 export default App;
